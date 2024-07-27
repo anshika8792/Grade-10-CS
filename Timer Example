@@ -1,0 +1,18 @@
+var lastTime;
+var howOften = 5000;
+function setup() {
+  createCanvas(400, 400);
+  lastTime = millis(); // grab the starting time
+  background(220);
+}
+
+function draw() {
+  if(millis() - lastTime > howOften){
+    randX = random(width);
+    randY = random(height);
+    fill(random(255), random(255), random(255));
+    circle(randX, randY, 20);
+    lastTime = millis();
+    howOften *= .9;
+  }
+}
