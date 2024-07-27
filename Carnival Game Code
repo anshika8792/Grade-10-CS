@@ -1,0 +1,238 @@
+let targetX1 = 150;
+let targetX2 = 200;
+let targetX3 = 400;
+let targetY1 = 180;
+let targetY2 = 250;
+let targetY3 = 180;
+let circleX1 = 275;
+let circleX2 = 75;
+let circleX3 = 325;
+let circleY1 = 170;
+let circleY2 = 245;
+let circleY3 = 245;
+let objectX, objectY;
+let scoreA = 0;
+let scoreB = 0;
+function setup() {
+  createCanvas(600, 600);
+
+}
+
+function draw() {
+  background(255);
+
+  // game background
+  noStroke();
+  fill(210, 240, 250);
+  rect(15, 125, 475, 250);
+  fill(245, 90, 90);
+  rect(25, 135, 455, 230);
+
+  fill(240, 173, 173);
+  rect(15, 375, 475, 150);
+
+  noStroke();
+  fill(252, 220, 237);
+  triangle(15, 125, 250, 10, 490, 125);
+  fill(0);
+  textSize(20);
+  text("SCORE: "+scoreA, 120, 100);
+  text("SCORE: "+scoreB, 260, 100);
+
+  stroke(0);
+  for (y = 200; y <= 300; y += 70)
+    line(25, y, 475, y);
+
+  // background waves
+  noStroke();
+  fill(185, 225, 250);
+  arc(25, 365, 75, 100, -PI / 2, 0);
+  arc(100, 365, 100, 100, -PI, 0);
+  arc(175, 365, 100, 100, -PI, 0);
+  arc(250, 365, 100, 100, -PI, 0);
+  arc(325, 365, 100, 100, -PI, 0);
+  arc(400, 365, 100, 100, -PI, 0);
+  arc(460, 365, 40, 90, -PI, 0);
+
+  // top row left duck
+  duck(targetX1, targetY1);
+  targetX1 -= 1;
+  if (targetX1 < 100) {
+    targetX1 = 450;
+  }
+
+  // top row right duck
+  duck(targetX3, targetY3);
+  targetX3 -= 1;
+  if (targetX3 < 100) {
+    targetX3 = 450;
+  }
+
+  // bottom row duck
+  duck(targetX2, targetY2);
+  targetX2 += 2;
+  if (targetX2 >= 450) {
+    targetX2 = 50;
+  }
+
+  // top row target
+  target(circleX1, circleY1);
+  circleX1 -= 1;
+  if (circleX1 < 100) {
+    circleX1 = 450;
+  }
+
+  // bottom row left target
+  target(circleX2, circleY2);
+  circleX2 += 2;
+  if (circleX2 >= 450) {
+    circleX2 = 50;
+  }
+  
+  // bottom row right target
+  target(circleX3, circleY3);
+  circleX3 += 2;
+  if (circleX3 >= 450) {
+    circleX3 = 50;
+  }
+
+  // player 1 panel(left)
+  fill(70, 110, 242);
+  rect(75, 400, 75, 40);
+  fill(79, 161, 106);
+  rect(75, 460, 75, 40);
+
+  // player 2 panel(right)
+  fill(70, 110, 242);
+  rect(300, 400, 75, 40);
+  fill(79, 161, 106);
+  rect(300, 460, 75, 40);
+
+  //shooting target
+  fill(0);
+  circle(objectX, objectY, 15);
+  
+}
+
+function mousePressed() {
+  let button = 0;
+
+  if (mouseX >= 75 && mouseX <= 150 && mouseY >= 400 && mouseY <= 440) {
+    objectX = random(25, 460);
+    objectY = random(140, 200);
+    button = 1;
+  }
+
+  if (mouseX >= 75 && mouseX <= 150 && mouseY >= 460 && mouseY <= 500)
+  {
+    objectX = random(25, 460);
+    objectY = random(200, 275);
+    button = 2;
+  }
+
+  if (mouseX >= 300 && mouseX <= 400 && mouseY >= 400 && mouseY <= 440) {
+    objectX = random(25, 460);
+    objectY = random(200, 275);
+    button = 3;
+  }
+
+  if (mouseX >= 300 && mouseX <= 460 && mouseY >= 460 && mouseY <= 500) {
+    objectX = random(25, 460);
+    objectY = random(140, 200);
+    button = 4;
+  }
+
+  hit(button, objectX, objectY);
+}
+
+// detects whether object has hit any of the target and increments the score for the player who has hit the target
+function hit(button, objectX, objectY) {
+  // initialize variable
+  let hit = 0;
+
+  // following if statements detect if object has hit any of 6 targets
+    if(objectX >= targetX1 - 20 && objectX <= targetX1 + 20)
+    {
+      if(objectY <= targetY1 + 20 && objectY >= targetY1 - 20)
+      {
+        hit = 1;
+      }
+    }
+
+  if(objectX >= targetX2 - 20 && objectX <= targetX2 + 20)
+    {
+      if(objectY <= targetX2 + 20 && objectY >= targetX2 - 20)
+      {
+        hit = 1;
+      }
+    }
+
+   if(objectX >= targetX3 - 20 && objectX <= targetX3 + 20)
+    {
+      if(objectY <= targetY3 + 20 && objectY >= targetY3 - 20)
+      {
+        hit = 1;
+      }
+    }
+
+   if(objectX >= circleX1 - 20 && objectX <= circleX1 + 20)
+    {
+      if(objectY <= circleY1 + 20 && objectY >= circleY1 - 20)
+      {
+        hit = 1;
+      }
+    }
+
+   if(objectX >= circleX2 - 20 && objectX <= circleX2 + 20)
+    {
+      if(objectY <= circleY2 + 20 && objectY >= circleY2 - 20)
+      {
+        hit = 1;
+      }
+    }
+  
+  if(objectX >= circleX3 - 20 && objectX <= circleX3 + 20)
+    {
+      if(objectY <= circleY3 + 20 && objectY >= circleY3 - 20)
+      {
+        hit = 1;
+      }
+    }
+
+  // if there is a hit, depending on the button clicked, increment the appropriate player's score
+  if(hit == 1) {
+    if(button == 1 || button == 2) {
+      scoreA = scoreA + 1;
+    } else {
+      scoreB = scoreB + 1;
+    }
+  }
+}
+
+//create a function for the duck and a function for the black and white target
+function duck(targetX, targetY) {
+  stroke(0);
+  fill('yellow');
+  ellipse(targetX, targetY, 60, 40);
+  ellipse(targetX - 10, targetY - 20, 25, 25);
+  fill('black');
+  ellipse(targetX - 10, targetY - 20, 3, 3);
+  fill('yellow');
+  triangle(targetX - 20, targetY - 20, targetX - 20, targetY - 15, targetX - 40, targetY - 18);
+}
+
+function target(circleX, circleY) {
+  fill(0);
+  circle(circleX, circleY, 50);
+  fill(255);
+  circle(circleX, circleY, 40);
+  fill(0);
+  circle(circleX, circleY, 30);
+  fill(255);
+  circle(circleX, circleY, 20);
+  fill(0);
+  circle(circleX, circleY, 10);
+
+}
+
+
