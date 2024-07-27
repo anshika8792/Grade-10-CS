@@ -1,0 +1,150 @@
+// my state variables 
+var PAGE_MENU = 0 
+var PAGE_GAMEINTRO = 1 
+var PAGE_EXIT = 2 
+var PAGE_INSTRUCTIONS = 3 
+var PAGE_GAMELVL1 = 4 
+var PAGE_GAMELVL2 = 5 
+var PAGE_ENDGAME = 6 
+var currPage = PAGE_GAMELVL1 
+// hero variables 
+var heroX; 
+var heroY; 
+var heroDiam; 
+var heroSpeed; 
+var heroAcc; 
+// key variables 
+var keyLeft = false 
+var keyRight = false 
+var groundLevel = 350; 
+var jumping = false; 
+function setup() { 
+  createCanvas(400, 400); 
+  setGameVals(); 
+} 
+
+function draw() { 
+  if (currPage == PAGE_MENU) 
+  mainMenu(); 
+  else if (currPage == PAGE_GAMEINTRO) gameIntro(); 
+  else if (currPage == PAGE_EXIT) 
+  gameExit(); 
+  else if (currPage == PAGE_INSTRUCTIONS) background(0, 255, 0); 
+  else if (currPage == PAGE_EXIT) 
+  background(0, 0, 255); 
+  else if (currPage == PAGE_GAMELVL1) gameLvl1(); 
+  else if (currPage == PAGE_GAMELVL2) background(255, 255, 255);
+  else if (currPage == PAGE_ENDGAME) { 
+  background(220); 
+  textSize(60); 
+  fill(0); 
+  text("You Lose!!", 50, 200); 
+  } 
+} 
+
+function setGameVals() { 
+  heroX = width / 2; 
+  heroDiam = 20; 
+  heroY = groundLevel - heroDiam/2; 
+  heroSpeed = 1; 
+  heroAcc = 20; 
+
+}
+
+function mainMenu() { 
+  background(220); 
+  textSize(60); 
+  fill(0, 255, 0); 
+  // displaying play button 
+  if (mouseX >= 50 && mouseX <= 350 && mouseY >= height / 5 && mouseY <= 2 * height / 5) fill(0, 0, 255); 
+  rect(50, height / 5, 300, height / 5); // top button 
+  //displaying exit button 
+  fill(0, 255, 0); 
+  if (mouseX >= 50 && mouseX <= 350 && mouseY >= 3 * height / 5 && mouseY <= 4 * height / 5) 
+    fill(0, 0, 255); 
+  rect(50, 3 * height / 5, 300, height / 5); // bottom button 
+  fill(0); 
+  textAlign(CENTER, CENTER); 
+  text("PLAY", 50, height / 5, 300, height / 5); 
+  text("EXIT", 50, 3 * height / 5, 300, height / 5) 
+} 
+
+function mousePressed() { 
+if (mouseButton == LEFT) { 
+  if (currPage == PAGE_MENU) { 
+    if (mouseX >= 50 && mouseX <= 350 && mouseY >= height / 5 && mouseY <= 2 * height / 5) 
+      currPage = PAGE_GAMEINTRO;
+    else if (mouseX >= 50 && mouseX <= 350 && mouseY >= 3 * height / 5 && mouseY <= 4 * height / 5) 
+      currPage = PAGE_EXIT; 
+  } else if (currPage == PAGE_GAMEINTRO) { 
+    setGameVals(); 
+    currPage = PAGE_GAMELVL1; 
+  } else if (currPage == PAGE_ENDGAME) 
+    currPage = PAGE_MENU; 
+  } 
+} 
+
+// intro to the game scene 
+function gameIntro() { 
+  background(255, 0, 0); 
+  textSize(20); 
+  textAlign(LEFT) 
+  text("Welcome to your nightmare!!!", 50, 200); 
+} 
+
+function gameExit() { 
+  background(0); 
+  fill(220); 
+  textSize(20); 
+  textAlign(LEFT); 
+  text("See ya all laters!!!", 50, 200); 
+} 
+
+function gameLvl1() { 
+  // drawing game screen 
+  fill(220); 
+  rect(0, 0, width, height); 
+  // draw the gound 
+  fill(102, 51, 0); 
+  rect(0, groundLevel, width, height - groundLevel); 
+  // draw my hero 
+  fill(0, 255, 0); 
+  circle(heroX, heroY, heroDiam); 
+
+  // move my hero 
+  if (keyLeft == true && heroX - heroSpeed > 20 + heroDiam / 2) 
+    heroX -= heroSpeed; 
+  if (keyRight == true && heroX + heroSpeed < width - 20 - heroDiam / 2) heroX += heroSpeed; 
+  if(jumping == true){
+  heroY -= heroAcc; 
+  heroAcc--; 
+  if(heroY >= groundLevel - heroDiam/2){ 
+    heroY = groundLevel - heroDiam/2; 
+    jumping = false 
+    } 
+  } 
+} 
+
+function keyPressed() { 
+  if (currPage == PAGE_GAMELVL1) { 
+    if (keyCode === LEFT_ARROW) { 
+      keyLeft = true; 
+    } else if (keyCode === RIGHT_ARROW) { 
+      keyRight = true; 
+    } 
+    if(keyCode == UP_ARROW && jumping == false) { 
+      jumping = true; 
+      heroAcc = 20; 
+      } 
+    } 
+  } 
+
+function keyReleased() { 
+  if (currPage == PAGE_GAMELVL1) { 
+    if (keyCode === LEFT_ARROW) { 
+      keyLeft = false; 
+    } else if (keyCode === RIGHT_ARROW) { 
+      keyRight = false; 
+      } 
+    } 
+  }
