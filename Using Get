@@ -1,0 +1,38 @@
+var cx, cy;
+var keyLeft = false;
+
+function setup() {
+  createCanvas(400, 400);
+  cx = width / 2
+  cy = height / 2;
+}
+
+function draw() {
+  background(220);
+  fill(0);
+  rect(100, 100, 50, 200);
+  fill(255, 0, 0);
+  circle(cx, cy, 50);
+
+  if (keyLeft == true && isWall(cx-25-1,cy) == false)
+  cx--;
+}
+
+function isWall(x, y) {
+  var col = get(x, y);
+  if(col[0] == 0 && col[1] == 0 && col[2] == 0)
+    return true;
+  return false;
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    keyLeft = true;
+  }
+}
+
+function keyReleased() {
+  if (keyCode === LEFT_ARROW) {
+    keyLeft = false;
+  }
+}
